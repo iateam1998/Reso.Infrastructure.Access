@@ -31,11 +31,6 @@ namespace DataService.DBEntity
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=168.63.237.187;Database=UseCaseDBDev;Trusted_Connection=false;uid=sa;pwd=zaQ@1234;");
-            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
