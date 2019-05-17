@@ -9,10 +9,10 @@ COPY ["./DataService/DataService.csproj", "DataService/"]
 RUN dotnet restore "Reso.Infrastructure.Access/Reso.Infrastructure.Access.csproj"
 COPY . .
 WORKDIR "/src/Reso.Infrastructure.Access"
-RUN dotnet build "Reso.Infrastructure.Access.csproj" -c Release -o /app
+RUN dotnet build "Reso.Infrastructure.Access.csproj" -c Debug -o /app
 
 FROM build AS publish
-RUN dotnet publish "Reso.Infrastructure.Access.csproj" -c Release -o /app
+RUN dotnet publish "Reso.Infrastructure.Access.csproj" -c Debug-o /app
 
 FROM base AS final
 WORKDIR /app
