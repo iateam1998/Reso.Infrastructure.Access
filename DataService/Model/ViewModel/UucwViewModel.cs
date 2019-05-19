@@ -3,7 +3,7 @@ using System;
 
 namespace DataService.Model.ViewModel
 {
-    public class UucwViewModel : BaseViewModel<Uucw>
+    public class UucwViewModel
     {
         public int Uucwid { get; set; }
         public int ApplicationCharacteristicId { get; set; }

@@ -15,6 +15,6 @@ namespace DataService.Model.ViewModel
         public bool Active { get; set; }
 
         public virtual RoleActor Role { get; set; }
-        public virtual ICollection<UseCaseActor> UseCaseActor { get; set; }
+        //public virtual ICollection<UseCaseActor> UseCaseActor { get; set; }
     }
 }

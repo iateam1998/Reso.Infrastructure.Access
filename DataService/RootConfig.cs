@@ -30,9 +30,10 @@ namespace DataService
             services.AddScoped(typeof(IEcfService), typeof(EcfService));
             services.AddScoped(typeof(IEntityService), typeof(EntityService));
             services.AddScoped(typeof(ITcfService), typeof(TcfService));
-            services.AddScoped(typeof(IUawService), typeof(UawService));
             services.AddScoped(typeof(IUseCaseService), typeof(UseCaseService));
-            services.AddScoped(typeof(IUucwService), typeof(UucwService));
+            services.AddScoped(typeof(IUseCaseEntityService), typeof(UseCaseEntityService));
+            services.AddScoped(typeof(IUseCaseActorService), typeof(UseCaseActorService));
+            services.AddScoped(typeof(IUseCaseStepService), typeof(UseCaseStepService));
             #endregion
 
             #region Mapper Config

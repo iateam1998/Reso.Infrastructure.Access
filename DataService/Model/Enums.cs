@@ -23,7 +23,7 @@ namespace DataService.Model.ViewModel
             U = 2,
             [Display(
                 Name = "S2B"
-                ,Description = "Project developed by students for external organizations")]
+                , Description = "Project developed by students for external organizations")]
             S2B = 3
         }
 
@@ -164,6 +164,30 @@ namespace DataService.Model.ViewModel
             )]
             Cancel = 5
         }
+
+        public enum CharacteristicDefinition
+        {
+            [Display(
+                                Name = "Environmental Complexity Factor",
+                Description = "Để tính toán ECF, mỗi yếu tố môi trường được gán một giá trị dựa trên cấp độ kinh nghiệm của nhóm."
+            )]
+            ECF = 1,
+            [Display(
+                                Name = "Technical Complexity Factor",
+                Description = "Để tính toán TCF, mỗi yếu tố kỹ thuật được gán một giá trị dựa trên mức độ thiết yếu của khía cạnh kỹ thuật đối với hệ thống đang được phát triển."
+            )]
+            TCF = 2,
+            [Display(
+                                Name = "Unadjusted Actor Weight",
+                Description = "UAW được tính toán dựa trên số lượng và độ phức tạp của các tác nhân cho hệ thống."
+            )]
+            UAW = 3,
+            [Display(
+                                Name = "Environmental Complexity Factor",
+                Description = "UUCW được tính toán dựa trên số lượng và độ phức tạp của các trường hợp sử dụng cho hệ thống."
+            )]
+            UUCW = 4
+        }
         public static IDictionary<int, string> Get<Type>()
         {
             var type = typeof(Type);
@@ -198,8 +222,9 @@ namespace DataService.Model.ViewModel
                 {
                     return displayNameAttr.Name + " - Description: " + displayNameAttr.Description;
                 }
-                else { 
-                return displayNameAttr.Name;
+                else
+                {
+                    return displayNameAttr.Name;
                 }
             }
             return null;

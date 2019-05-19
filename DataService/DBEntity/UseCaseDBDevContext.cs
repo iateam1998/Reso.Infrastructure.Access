@@ -22,12 +22,10 @@ namespace DataService.DBEntity
         public virtual DbSet<Entity> Entity { get; set; }
         public virtual DbSet<RoleActor> RoleActor { get; set; }
         public virtual DbSet<Tcf> Tcf { get; set; }
-        public virtual DbSet<Uaw> Uaw { get; set; }
         public virtual DbSet<UseCase> UseCase { get; set; }
         public virtual DbSet<UseCaseActor> UseCaseActor { get; set; }
         public virtual DbSet<UseCaseEntity> UseCaseEntity { get; set; }
         public virtual DbSet<UseCaseStep> UseCaseStep { get; set; }
-        public virtual DbSet<Uucw> Uucw { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -174,23 +172,6 @@ namespace DataService.DBEntity
                     .HasConstraintName("FK_TCF_ApplicationCharacteristic");
             });
 
-            modelBuilder.Entity<Uaw>(entity =>
-            {
-                entity.ToTable("UAW");
-
-                entity.HasIndex(e => e.ApplicationCharacteristicId)
-                    .HasName("UQ_4_ProjectCharacteristicId")
-                    .IsUnique();
-
-                entity.Property(e => e.Uawid).HasColumnName("UAWId");
-
-                entity.HasOne(d => d.ApplicationCharacteristic)
-                    .WithOne(p => p.Uaw)
-                    .HasForeignKey<Uaw>(d => d.ApplicationCharacteristicId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_UAW_ApplicationCharacteristic");
-            });
-
             modelBuilder.Entity<UseCase>(entity =>
             {
                 entity.Property(e => e.CreateBy)
@@ -277,23 +258,6 @@ namespace DataService.DBEntity
                     .HasForeignKey(d => d.UseCaseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UseCase_UseCaseStep");
-            });
-
-            modelBuilder.Entity<Uucw>(entity =>
-            {
-                entity.ToTable("UUCW");
-
-                entity.HasIndex(e => e.ApplicationCharacteristicId)
-                    .HasName("UQ_3_ProjectCharacteristicId")
-                    .IsUnique();
-
-                entity.Property(e => e.Uucwid).HasColumnName("UUCWId");
-
-                entity.HasOne(d => d.ApplicationCharacteristic)
-                    .WithOne(p => p.Uucw)
-                    .HasForeignKey<Uucw>(d => d.ApplicationCharacteristicId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_UUCW_ApplicationCharacteristic");
             });
         }
     }

@@ -4,6 +4,11 @@ namespace DataService.Model.ViewModel
 {
     public class ApplicationCharacteristicViewModel : BaseViewModel<ApplicationCharacteristic>
     {
+        public ApplicationCharacteristicViewModel()
+        {
+            Uaw = new UawViewModel();
+            Uucw = new UucwViewModel();
+        }
         public int ApplicationCharacteristicId { get; set; }
         public int ApplicationId { get; set; }
         public int? ActualEfford { get; set; }

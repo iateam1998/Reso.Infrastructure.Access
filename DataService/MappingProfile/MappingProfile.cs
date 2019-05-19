@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataService.DBEntity;
+using DataService.Model.RequestModel;
 using DataService.Model.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -31,15 +32,11 @@ namespace DataService.MappingProfileModel
             this.CreateMap<Tcf, TcfViewModel>();
             this.CreateMap<TcfViewModel, Tcf>();
 
-            this.CreateMap<Uaw, UawViewModel>();
-            this.CreateMap<UawViewModel, Uaw>();
 
             this.CreateMap<UseCase, UseCaseViewModel>();
             this.CreateMap<UseCaseViewModel, UseCase>();
 
-            this.CreateMap<Uucw, UucwViewModel>();
-            this.CreateMap<UucwViewModel, Uucw>();
-
+            this.CreateMap<UseCaseUpdateModel, UseCaseViewModel>();
             /// </summary>
             //For Missing Type
             this.AllowNullCollections = true;

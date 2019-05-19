@@ -60,28 +60,13 @@ namespace DataService.Service.ServiceAPI
             {
                 return new List<ApplicationViewModel>();
             }
-            foreach (ApplicationViewModel application in result)
-            {
-                var applicationChar = application.ApplicationCharacteristic;
-                if (applicationChar != null)
-                {
-                    if (applicationChar.Ecf != null && applicationChar.Uaw != null && applicationChar.Uucw != null && applicationChar.Tcf != null)
-                    {
-                        applicationChar.TotalUcp = Math.Round((applicationChar.Uucw.TotalUucw + applicationChar.Uaw.TotalUaw) * applicationChar.Tcf.TotalTCF * applicationChar.Ecf.TotalECF,2);
-                        applicationChar.EstimatedEffort = Math.Round(applicationChar.TotalUcp * 28,2);
-                    }
-                }
-            }
-
-
+            result = CalculateUCP(result);
             return result;
         }
 
         public ApplicationViewModel Create(ApplicationCreateModel createModel)
         {
             var applicationCharacteristicService = ServiceFactory.CreateService<IApplicationCharacteristicService>(_serviceProvider);
-            var uawService = ServiceFactory.CreateService<IUawService>(_serviceProvider);
-            var uucwService = ServiceFactory.CreateService<IUucwService>(_serviceProvider);
             var tcfService = ServiceFactory.CreateService<ITcfService>(_serviceProvider);
             var ecfService = ServiceFactory.CreateService<IEcfService>(_serviceProvider);
             if (GetByName(createModel.ApplicationName, createModel.Stage, createModel.Category, null) != null)
@@ -122,24 +107,6 @@ namespace DataService.Service.ServiceAPI
                 var appChar = applicationCharacteristicService.Create(applicationCharacteristicViewModel);
                 if (appChar != null)
                 {
-                    var uucwViewModel = new UucwViewModel()
-                    {
-                        ApplicationCharacteristicId = appChar.ApplicationCharacteristicId,
-                        Active = true,
-                        Average = 0,
-                        Complex = 0,
-                        Simple = 0
-                    };
-                    uucwService.Create(uucwViewModel);
-                    var uawViewModel = new UawViewModel()
-                    {
-                        ApplicationCharacteristicId = appChar.ApplicationCharacteristicId,
-                        Active = true,
-                        Average = 0,
-                        Complex = 0,
-                        Simple = 0
-                    };
-                    uawService.Create(uawViewModel);
                     var tcfViewModel = new TcfViewModel()
                     {
                         ApplicationCharacteristicId = appChar.ApplicationCharacteristicId,
@@ -166,6 +133,61 @@ namespace DataService.Service.ServiceAPI
             {
                 return result;
             }
+        }
+        private List<ApplicationViewModel> CalculateUCP(List<ApplicationViewModel> applications)
+        {
+            var useCaseService = ServiceFactory.CreateService<IUseCaseService>(_serviceProvider);
+            foreach (ApplicationViewModel application in applications)
+            {
+                var applicationChar = application.ApplicationCharacteristic;
+                if (applicationChar != null)
+                {
+                    if (applicationChar.Ecf != null && applicationChar.Tcf != null)
+                    {
+                        var useCaseApplication = useCaseService.Get(p => p.ApplicationId == application.ApplicationId).ToList();
+                        if (useCaseApplication.Count > 0)
+                        {
+                            var uaw = application.ApplicationCharacteristic.Uaw;
+                            var uucw = application.ApplicationCharacteristic.Uucw;
+                            foreach (UseCaseViewModel useCase in useCaseApplication)
+                            {
+                                if (useCase.UseCaseActor.Count > 0)
+                                {
+                                    foreach (UseCaseActorViewModel actor in useCase.UseCaseActor)
+                                    {
+                                        if (actor.Actor.Role.Complexity == 3)
+                                        {
+                                            ++uaw.Complex;
+                                        }
+                                        else if (actor.Actor.Role.Complexity == 2)
+                                        {
+                                            ++uaw.Average;
+                                        }
+                                        else if (actor.Actor.Role.Complexity == 1)
+                                        {
+                                            ++uaw.Simple;
+                                        }
+                                    }
+                                }
+                                if(useCase.Complexity == 3)
+                                {
+                                    ++uucw.Complex;
+                                }else if (useCase.Complexity == 2)
+                                {
+                                    ++uucw.Average;
+                                }else if (useCase.Complexity == 1)
+                                {
+                                    ++uucw.Simple;
+                                }
+                            }
+                        }
+
+                        applicationChar.TotalUcp = Math.Round((applicationChar.Uucw.TotalUucw + applicationChar.Uaw.TotalUaw) * applicationChar.Tcf.TotalTCF * applicationChar.Ecf.TotalECF, 2);
+                        applicationChar.EstimatedEffort = Math.Round(applicationChar.TotalUcp * 28, 2);
+                    }
+                }
+            }
+            return applications;
         }
     }
 }

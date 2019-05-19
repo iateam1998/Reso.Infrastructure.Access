@@ -14,6 +14,12 @@ namespace Reso.Infrastructure.Access.Controllers
     public class EnumController : ControllerBase
     {
         
+        [HttpGet("characteristic-definition")]
+        public IActionResult GetCharacteristicDefinition()
+        {
+            return Ok(Enums.Get<CharacteristicDefinition>());
+        }
+
         [HttpGet("application-origin")]
         public IActionResult GetApplicationOriginEnum()
         {

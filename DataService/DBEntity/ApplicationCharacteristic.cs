@@ -13,7 +13,5 @@ namespace DataService.DBEntity
         public virtual Application Application { get; set; }
         public virtual Ecf Ecf { get; set; }
         public virtual Tcf Tcf { get; set; }
-        public virtual Uaw Uaw { get; set; }
-        public virtual Uucw Uucw { get; set; }
     }
 }
